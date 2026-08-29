@@ -1,0 +1,10 @@
+{
+  "name": "blog-website",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd client && npm install && npm run build",
+    "client:dev": "cd client && npm run dev",
+    "server:dev": "cd server && npm run dev"
+  }
+}
