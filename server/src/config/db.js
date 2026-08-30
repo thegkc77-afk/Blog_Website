@@ -1,4 +1,12 @@
 const mongoose = require('mongoose');
+const dns = require('dns');
+
+// Configure public DNS resolvers to handle MongoDB Atlas SRV records on Windows/local networks
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (dnsErr) {
+  // Ignore if setting custom DNS servers fails in restricted environments
+}
 
 // Helper to sanitize URI for safe logging (hides password)
 const sanitizeUri = (uri) => {
@@ -30,9 +38,9 @@ const connectDB = async () => {
   uri = normalizeMongoUri(uri);
 
   try {
-    // Set connection timeout to 3 seconds for fast fallback
+    // Set connection timeout to 5 seconds
     const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 3000,
+      serverSelectionTimeoutMS: 5000,
     });
     console.log(`[MongoDB] Connected successfully: ${conn.connection.host}`);
   } catch (err) {
@@ -55,4 +63,5 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
 
