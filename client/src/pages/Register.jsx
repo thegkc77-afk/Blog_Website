@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Lock, UserPlus, Sparkles, AlertCircle, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
+import { User, Mail, Lock, UserPlus, Feather, AlertCircle, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +27,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Client-side validations
     if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
       setValidationError('Please fill in all required fields.');
       return;
@@ -55,26 +54,27 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md space-y-8">
+        
         {/* Header Header */}
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 mx-auto flex items-center justify-center shadow-xl shadow-indigo-500/30 mb-4">
-            <Sparkles className="w-6 h-6 text-white" />
+        <div className="text-center space-y-3">
+          <div className="w-12 h-12 rounded-xl bg-brand-600 text-white mx-auto flex items-center justify-center shadow-sm">
+            <Feather className="w-6 h-6 stroke-[2.2]" />
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white mb-2">
-            Create Account
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Join BlogNest Community
           </h1>
-          <p className="text-sm text-slate-400">
-            Join DevVibe Blog community and publish your thoughts
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Create an account to write, publish and connect with readers
           </p>
         </div>
 
         {/* Card Form */}
-        <div className="glass-panel rounded-3xl p-8 border border-slate-800 shadow-2xl space-y-6">
+        <div className="editorial-card rounded-2xl bg-white dark:bg-navy-800 p-8 border border-slate-200/80 dark:border-slate-800 shadow-card space-y-6">
           {(validationError || error) && (
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm animate-shake">
-              <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-medium">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
               <span>{validationError || error}</span>
             </div>
           )}
@@ -82,12 +82,12 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Full Name <span className="text-rose-400">*</span>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Full Name <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <User className="w-5 h-5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <User className="w-4 h-4" />
                 </div>
                 <input
                   type="text"
@@ -96,19 +96,19 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Alex Rivers"
                   required
-                  className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium placeholder-slate-400 focus:outline-none focus:border-brand-600 transition-all"
                 />
               </div>
             </div>
 
             {/* Email Address */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Email Address <span className="text-rose-400">*</span>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Email Address <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Mail className="w-5 h-5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Mail className="w-4 h-4" />
                 </div>
                 <input
                   type="email"
@@ -117,19 +117,19 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="alex@example.com"
                   required
-                  className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium placeholder-slate-400 focus:outline-none focus:border-brand-600 transition-all"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Password <span className="text-rose-400">*</span>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Password <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Lock className="w-5 h-5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Lock className="w-4 h-4" />
                 </div>
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -138,26 +138,26 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="At least 6 characters"
                   required
-                  className="w-full pl-11 pr-11 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium placeholder-slate-400 focus:outline-none focus:border-brand-600 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Confirm Password <span className="text-rose-400">*</span>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Confirm Password <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <CheckCircle2 className="w-5 h-5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <CheckCircle2 className="w-4 h-4" />
                 </div>
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -166,54 +166,40 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Re-enter password"
                   required
-                  className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium placeholder-slate-400 focus:outline-none focus:border-brand-600 transition-all"
                 />
               </div>
-            </div>
-
-            {/* Optional Bio */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                Short Bio (Optional)
-              </label>
-              <textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                placeholder="Software engineer & tech writer..."
-                rows="2"
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all resize-none"
-              />
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full gradient-btn py-3.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 mt-2"
+              className="w-full py-3.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50 mt-2"
             >
               {isSubmitting ? (
                 <span>Creating Account...</span>
               ) : (
                 <>
                   <UserPlus className="w-4 h-4" />
-                  <span>Register Account</span>
+                  <span>Create Account</span>
                 </>
               )}
             </button>
           </form>
 
           {/* Footer navigation */}
-          <div className="pt-3 border-t border-slate-800/80 text-center text-xs text-slate-400">
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
             Already registered?{' '}
             <Link
               to="/login"
-              className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="font-bold text-brand-600 dark:text-brand-400 hover:underline"
             >
-              Sign In Here
+              Log in
             </Link>
           </div>
         </div>
+
       </div>
     </div>
   );

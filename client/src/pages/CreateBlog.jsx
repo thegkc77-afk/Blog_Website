@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { blogAPI } from '../services/api';
-import { PenSquare, Sparkles, Tag, Layers, FileText, AlertCircle, ArrowLeft, Send } from 'lucide-react';
+import { Feather, Sparkles, Tag, Layers, FileText, AlertCircle, ArrowLeft, Send } from 'lucide-react';
 
-const CATEGORIES = ['General', 'Technology', 'Design', 'Lifestyle', 'Programming', 'Business'];
+const CATEGORIES = ['General', 'Technology', 'Design', 'Lifestyle', 'Travel', 'Food'];
 
 const CreateBlog = () => {
   const navigate = useNavigate();
@@ -52,36 +52,36 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-6">
       {/* Header Bar */}
       <div className="flex items-center justify-between">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-navy-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-navy-700 text-xs font-semibold shadow-sm transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Cancel</span>
         </button>
 
-        <div className="flex items-center gap-2 text-xs text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full font-semibold">
+        <div className="flex items-center gap-1.5 text-xs text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/80 border border-brand-200 dark:border-brand-800 px-3 py-1 rounded-full font-semibold">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Drafting Post</span>
         </div>
       </div>
 
-      <div className="glass-panel rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl space-y-6">
+      <div className="editorial-card rounded-2xl bg-white dark:bg-navy-800 p-6 sm:p-10 border border-slate-200/80 dark:border-slate-800 shadow-card space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-1">
             Write New Blog Post
           </h1>
-          <p className="text-xs text-slate-400">
-            Share your knowledge with readers across the web
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Share your knowledge and ideas with readers across the world
           </p>
         </div>
 
         {error && (
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm animate-shake">
-            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-medium">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{error}</span>
           </div>
         )}
@@ -89,48 +89,44 @@ const CreateBlog = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Article Title <span className="text-rose-400">*</span>
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              Article Title <span className="text-rose-500">*</span>
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                <FileText className="w-5 h-5" />
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <FileText className="w-4 h-4" />
               </div>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="e.g. Master modern web development with Node & React"
+                placeholder="e.g. Exploring the Hidden Beauty of Himalayas"
                 required
                 maxLength={120}
-                className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-semibold"
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm font-semibold placeholder-slate-400 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all"
               />
-            </div>
-            <div className="flex justify-end text-[11px] text-slate-500 mt-1">
-              {formData.title.length}/120
             </div>
           </div>
 
-          {/* Category & Tags Row */}
+          {/* Category & Tags */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Category */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Category
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Layers className="w-5 h-5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Layers className="w-4 h-4" />
                 </div>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:border-brand-600 transition-all"
                 >
                   {CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat} className="bg-slate-900 text-slate-100">
+                    <option key={cat} value={cat} className="bg-white dark:bg-navy-900 text-slate-900 dark:text-slate-100">
                       {cat}
                     </option>
                   ))}
@@ -138,69 +134,48 @@ const CreateBlog = () => {
               </div>
             </div>
 
-            {/* Tags */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Tags (Comma separated)
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Tag className="w-5 h-5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Tag className="w-4 h-4" />
                 </div>
                 <input
                   type="text"
                   name="tags"
                   value={formData.tags}
                   onChange={handleChange}
-                  placeholder="e.g. react, nodejs, webdev"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  placeholder="e.g. travel, mountains, adventure"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm placeholder-slate-400 focus:outline-none focus:border-brand-600 transition-all"
                 />
               </div>
             </div>
           </div>
 
-          {/* Optional Summary */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-              Short Summary Excerpt (Optional)
-            </label>
-            <textarea
-              name="summary"
-              value={formData.summary}
-              onChange={handleChange}
-              placeholder="Brief 1-2 sentence overview of your article..."
-              rows="2"
-              maxLength={300}
-              className="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all resize-none"
-            />
-          </div>
-
           {/* Content */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Article Content <span className="text-rose-400">*</span>
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              Article Content <span className="text-rose-500">*</span>
             </label>
             <textarea
               name="content"
               value={formData.content}
               onChange={handleChange}
-              placeholder="Write your article content here..."
-              rows="12"
+              placeholder="Write your story..."
+              rows="10"
               required
-              className="w-full p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all leading-relaxed"
+              className="w-full p-4 rounded-lg bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm placeholder-slate-400 focus:outline-none focus:border-brand-600 transition-all leading-relaxed"
             />
-            <div className="flex justify-between text-[11px] text-slate-500 mt-1">
-              <span>Supports multi-paragraph formatting</span>
-              <span>{formData.content.trim().split(/\s+/).filter(Boolean).length} words</span>
-            </div>
           </div>
 
-          {/* Action Button */}
-          <div className="pt-4 flex items-center justify-end gap-4 border-t border-slate-800/80">
+          {/* Submit */}
+          <div className="pt-4 flex items-center justify-end border-t border-slate-200 dark:border-slate-800">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="gradient-btn px-8 py-3.5 rounded-xl font-semibold text-sm flex items-center gap-2 shadow-xl disabled:opacity-50"
+              className="px-6 py-3 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm flex items-center gap-2 shadow-sm transition-all disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>Publishing...</span>

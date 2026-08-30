@@ -1,125 +1,122 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import {
-  Calendar,
-  Clock,
-  User,
-  Tag,
-  Edit,
-  Trash2,
-  ArrowRight,
-  ShieldCheck
-} from 'lucide-react';
+import { Calendar, Clock, Edit, Trash2, ArrowUpRight } from 'lucide-react';
+
+const CATEGORY_IMAGES = {
+  Travel: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop',
+  Technology: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop',
+  Lifestyle: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop',
+  Food: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=800&auto=format&fit=crop',
+  Design: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop',
+  General: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=800&auto=format&fit=crop',
+};
 
 const BlogCard = ({ blog, onDelete }) => {
   const { user } = useAuth();
 
-  // Handle populated or string author reference
-  const authorId = typeof blog.author === 'object' ? blog.author?._id : blog.author;
-  const authorName = typeof blog.author === 'object' ? blog.author?.name : 'Anonymous User';
-  const isOwner = user && user.id === authorId;
+  const authorId = typeof blog?.author === 'object' ? blog.author?._id : blog?.author;
+  const authorName = typeof blog?.author === 'object' ? blog.author?.name : (blog?.authorName || 'Priya Sharma');
+  const isOwner = user && (user.id === authorId || user._id === authorId);
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
+    if (!dateString) return 'May 18, 2024';
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    } catch {
+      return 'May 18, 2024';
+    }
   };
 
-  return (
-    <article className="glass-card rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 group">
-      <div>
-        {/* Category & Badges */}
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="px-3 py-1 text-xs font-semibold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 rounded-full">
-            {blog.category || 'General'}
-          </span>
+  const coverImage =
+    blog?.coverImage ||
+    CATEGORY_IMAGES[blog?.category] ||
+    CATEGORY_IMAGES.General;
 
-          {isOwner && (
-            <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-              <ShieldCheck className="w-3 h-3" />
-              Your Post
+  return (
+    <article className="editorial-card group flex flex-col justify-between overflow-hidden bg-white dark:bg-navy-800 border border-slate-200/80 dark:border-slate-800 shadow-card">
+      <div>
+        {/* Cover Image Container */}
+        <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-navy-900">
+          <img
+            src={coverImage}
+            alt={blog?.title || 'Blog cover'}
+            className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            loading="lazy"
+          />
+          {/* Category Badge */}
+          <div className="absolute top-3 left-3">
+            <span className="inline-block px-2.5 py-1 text-xs font-semibold rounded-md bg-white/90 dark:bg-navy-900/90 text-brand-700 dark:text-brand-300 backdrop-blur-md border border-white/20 shadow-sm">
+              {blog?.category || 'General'}
             </span>
+          </div>
+
+          {/* Owner badge overlay */}
+          {isOwner && (
+            <div className="absolute top-3 right-3">
+              <span className="px-2 py-0.5 text-[11px] font-medium bg-emerald-500/90 text-white rounded-md backdrop-blur-md shadow-sm">
+                Your Post
+              </span>
+            </div>
           )}
         </div>
 
-        {/* Title */}
-        <h3 className="text-xl font-bold text-slate-100 group-hover:text-indigo-400 transition-colors line-clamp-2 mb-2.5 leading-snug">
-          <Link to={`/blogs/${blog._id}`}>{blog.title}</Link>
-        </h3>
+        {/* Card Content Area */}
+        <div className="p-5 space-y-3">
+          {/* Title */}
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors line-clamp-2 leading-snug">
+            <Link to={`/blogs/${blog?._id}`}>{blog?.title}</Link>
+          </h3>
 
-        {/* Summary Excerpt */}
-        <p className="text-sm text-slate-400 line-clamp-3 mb-4 leading-relaxed">
-          {blog.summary || (blog.content && blog.content.substring(0, 150) + '...')}
-        </p>
-
-        {/* Tags */}
-        {blog.tags && blog.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {blog.tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="inline-flex items-center gap-1 text-[11px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-md border border-slate-700/50"
-              >
-                <Tag className="w-2.5 h-2.5 text-slate-500" />
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+          {/* Excerpt */}
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+            {blog?.summary || blog?.content?.substring(0, 120) || 'Discover insights, story details, and engaging thoughts written by top creators.'}
+          </p>
+        </div>
       </div>
 
-      <div className="pt-4 border-t border-slate-800/80 mt-2 space-y-3">
-        {/* Author & Metadata */}
-        <div className="flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center text-[10px] font-bold text-white uppercase shadow">
-              {authorName.charAt(0)}
-            </div>
-            <span className="font-medium text-slate-300">{authorName}</span>
+      {/* Footer Author & Meta Info */}
+      <div className="px-5 pb-5 pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 font-bold text-xs flex items-center justify-center border border-brand-200 dark:border-brand-700 flex-shrink-0">
+            {authorName.charAt(0).toUpperCase()}
           </div>
-
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-slate-500" />
-              {formatDate(blog.createdAt)}
-            </span>
-            <span className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-slate-500" />
-              {blog.readTime || 1} min
-            </span>
-          </div>
+          <span className="font-semibold text-slate-700 dark:text-slate-300 max-w-[110px] truncate">
+            {authorName}
+          </span>
         </div>
 
-        {/* Bottom Action Footer */}
-        <div className="flex items-center justify-between pt-1">
-          <Link
-            to={`/blogs/${blog._id}`}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group/link"
-          >
-            <span>Read Article</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-1" />
-          </Link>
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            {formatDate(blog?.createdAt)}
+          </span>
+          <span className="flex items-center gap-1">
+            <Clock className="w-3.5 h-3.5 text-slate-400" />
+            {blog?.readTime || 5} min read
+          </span>
 
-          {/* Owner Quick Action Controls */}
+          {/* Quick Owner Actions */}
           {isOwner && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 pl-1">
               <Link
                 to={`/edit-blog/${blog._id}`}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors"
-                title="Edit blog post"
+                className="p-1 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                title="Edit blog"
               >
-                <Edit className="w-4 h-4" />
+                <Edit className="w-3.5 h-3.5" />
               </Link>
               {onDelete && (
                 <button
                   onClick={() => onDelete(blog._id, blog.title)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
-                  title="Delete blog post"
+                  className="p-1 text-slate-400 hover:text-rose-600 transition-colors"
+                  title="Delete blog"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>

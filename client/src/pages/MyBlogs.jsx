@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { blogAPI } from '../services/api';
 import BlogCard from '../components/BlogCard';
 import ConfirmModal from '../components/ConfirmModal';
-import { LayoutDashboard, PenSquare, FileText, Clock, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
+import { Feather, PenSquare, FileText, Clock, AlertCircle } from 'lucide-react';
 
 const MyBlogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -60,66 +60,65 @@ const MyBlogs = () => {
     }
   };
 
-  // Compute metrics
   const totalPosts = blogs.length;
-  const totalReadTime = blogs.reduce((acc, curr) => acc + (curr.readTime || 1), 0);
+  const totalReadTime = blogs.reduce((acc, curr) => acc + (curr.readTime || 5), 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-3xl p-8 border border-slate-800 shadow-xl">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 editorial-card rounded-2xl bg-white dark:bg-navy-800 p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-card">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-semibold mb-2">
-            <LayoutDashboard className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950/80 border border-brand-200 dark:border-brand-800 text-brand-700 dark:text-brand-300 text-xs font-semibold mb-1">
+            <Feather className="w-3.5 h-3.5 stroke-[2]" />
             <span>Author Dashboard</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             My Published Blogs
           </h1>
-          <p className="text-slate-400 text-sm">
-            Manage your articles, edit content, or review performance
+          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
+            Manage your articles, edit content, or review publication metrics
           </p>
         </div>
 
         <Link
           to="/create-blog"
-          className="gradient-btn px-6 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 shadow-lg whitespace-nowrap"
+          className="px-5 py-3 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-sm whitespace-nowrap"
         >
           <PenSquare className="w-4 h-4" />
           <span>New Article</span>
         </Link>
       </div>
 
-      {/* Metrics Cards */}
+      {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="glass-card rounded-2xl p-5 border border-slate-800 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-indigo-600/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-            <FileText className="w-6 h-6" />
+        <div className="editorial-card rounded-2xl bg-white dark:bg-navy-800 p-5 border border-slate-200/80 dark:border-slate-800 flex items-center gap-4 shadow-card">
+          <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center border border-brand-100 dark:border-brand-900">
+            <FileText className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-2xl font-black text-white">{totalPosts}</div>
-            <div className="text-xs font-medium text-slate-400">Total Published Articles</div>
+            <div className="text-2xl font-extrabold text-slate-900 dark:text-white">{totalPosts}</div>
+            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">Total Articles Published</div>
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 border border-slate-800 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-pink-600/10 border border-pink-500/20 flex items-center justify-center text-pink-400">
-            <Clock className="w-6 h-6" />
+        <div className="editorial-card rounded-2xl bg-white dark:bg-navy-800 p-5 border border-slate-200/80 dark:border-slate-800 flex items-center gap-4 shadow-card">
+          <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center border border-brand-100 dark:border-brand-900">
+            <Clock className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-2xl font-black text-white">{totalReadTime} mins</div>
-            <div className="text-xs font-medium text-slate-400">Total Estimated Read Time</div>
+            <div className="text-2xl font-extrabold text-slate-900 dark:text-white">{totalReadTime} mins</div>
+            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">Estimated Reading Time</div>
           </div>
         </div>
       </div>
 
       {/* Articles List */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-slate-200">Your Posts ({totalPosts})</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Your Stories ({totalPosts})</h2>
 
         {error && (
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm">
-            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 text-rose-700 dark:text-rose-300 text-xs font-medium">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{error}</span>
           </div>
         )}
@@ -127,7 +126,7 @@ const MyBlogs = () => {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="glass-card rounded-2xl p-6 h-64 animate-pulse"></div>
+              <div key={i} className="editorial-card rounded-2xl p-5 h-64 animate-pulse bg-white dark:bg-navy-800" />
             ))}
           </div>
         ) : blogs.length > 0 ? (
@@ -137,17 +136,15 @@ const MyBlogs = () => {
             ))}
           </div>
         ) : (
-          <div className="glass-panel rounded-3xl p-12 text-center border border-slate-800 max-w-md mx-auto space-y-4 my-6">
-            <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 mx-auto flex items-center justify-center text-slate-500">
-              <PenSquare className="w-7 h-7" />
-            </div>
-            <h3 className="text-lg font-bold text-slate-200">You haven't written any blogs yet</h3>
-            <p className="text-xs text-slate-400">
-              Publish your first blog article to display it in your personal dashboard.
+          <div className="editorial-card rounded-2xl p-10 text-center max-w-md mx-auto space-y-3 bg-white dark:bg-navy-800 my-6">
+            <PenSquare className="w-8 h-8 text-slate-400 mx-auto" />
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">You haven't written any blogs yet</h3>
+            <p className="text-xs text-slate-500">
+              Publish your first story to see it here on your author dashboard.
             </p>
             <Link
               to="/create-blog"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl gradient-btn text-xs font-semibold"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-600 text-white text-xs font-semibold"
             >
               <PenSquare className="w-4 h-4" />
               <span>Create Blog Post</span>
