@@ -7,9 +7,6 @@ const errorHandler = require('./middleware/error.middleware');
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB Database
-connectDB();
-
 const app = express();
 
 // Core Middlewares
@@ -41,11 +38,23 @@ app.use('*', (req, res) => {
 // Global Centralized Error Handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+// Connect to MongoDB Database and start server
+const startServer = async () => {
+  try {
+    await connectDB();
+    
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`===========================================`);
+      console.log(`  Blog Application Server Running on Port ${PORT}`);
+      console.log(`  Health check: http://localhost:${PORT}/api/health`);
+      console.log(`===========================================`);
+    });
+  } catch (err) {
+    console.error('Failed to start server:', err);
+  }
+};
 
-app.listen(PORT, () => {
-  console.log(`===========================================`);
-  console.log(`  Blog Application Server Running on Port ${PORT}`);
-  console.log(`  Health check: http://localhost:${PORT}/api/health`);
-  console.log(`===========================================`);
-});
+startServer();
+
+

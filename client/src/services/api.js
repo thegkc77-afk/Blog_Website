@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -25,10 +25,20 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message =
-      error.response?.data?.message ||
-      error.message ||
-      'An unexpected error occurred';
+    let message = 'An unexpected error occurred';
+
+    if (error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (typeof error.response?.data === 'string' && (error.response.data.includes('Proxy error') || error.response.data.includes('500 Internal Server Error') || error.response.data.includes('ECONNREFUSED'))) {
+      message = 'Backend server is not running or unreachable on port 5000. Please start the backend server.';
+    } else if (error.code === 'ERR_NETWORK' || error.message?.includes('Network Error')) {
+      message = 'Network error: Backend server is offline or unreachable on port 5000.';
+    } else if (error.response?.status === 500) {
+      message = 'Internal Server Error (500). Please ensure backend server is started and connected.';
+    } else if (error.message) {
+      message = error.message;
+    }
+
     return Promise.reject(new Error(message));
   }
 );

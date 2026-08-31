@@ -3,22 +3,35 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   const uri = process.env.MONGODB_URI;
 
-  if (!uri) {
-    console.error("[MongoDB] MONGODB_URI is not defined");
-    process.exit(1);
+  if (uri) {
+    try {
+      const conn = await mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 5000,
+      });
+
+      console.log(
+        `[MongoDB] Connected successfully to Cloud DB: ${conn.connection.host}`
+      );
+      return;
+    } catch (error) {
+      console.error("[MongoDB] Cloud connection failed:", error.message);
+      try {
+        await mongoose.disconnect();
+      } catch (discErr) {
+        // ignore disconnect error
+      }
+      console.log("[MongoDB] Attempting fallback to In-Memory MongoDB server...");
+    }
   }
 
   try {
-    const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 10000,
-    });
-
-    console.log(
-      `[MongoDB] Connected successfully: ${conn.connection.host}`
-    );
-  } catch (error) {
-    console.error("[MongoDB] Connection failed:", error.message);
-    process.exit(1);
+    const { MongoMemoryServer } = require("mongodb-memory-server");
+    const mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+    const conn = await mongoose.connect(mongoUri);
+    console.log(`[MongoDB] Connected successfully to In-Memory DB: ${conn.connection.host}`);
+  } catch (memError) {
+    console.error("[MongoDB] In-Memory server initialization failed:", memError.message);
   }
 };
 
